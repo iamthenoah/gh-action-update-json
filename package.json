@@ -1,5 +1,5 @@
 {
-	"name": "update-package-version",
+	"name": "gh-action-update-json",
 	"description": "Workflow to update the package.json file of a NodeJS project.",
 	"version": "1.0.0",
 	"author": "Noah",
