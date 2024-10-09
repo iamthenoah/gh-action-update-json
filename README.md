@@ -1,3 +1,5 @@
+[![deploy](https://github.com/iamthenoah/update-json-file/actions/workflows/deploy.yml/badge.svg)](https://github.com/iamthenoah/update-json-file/actions/workflows/deploy.yml)
+
 # Update JSON File Workflow
 
 This GitHub Actions workflow updates a specified key in a JSON file and commits the changes to a specified branch.
