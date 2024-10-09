@@ -1,4 +1,4 @@
-[![deploy](https://github.com/iamthenoah/update-json-file/actions/workflows/deploy.yml/badge.svg)](https://github.com/iamthenoah/update-json-file/actions/workflows/deploy.yml)
+[![deploy](https://github.com/iamthenoah/update-json-file/actions/workflows/build.yml/badge.svg)](https://github.com/iamthenoah/update-json-file/actions/workflows/build.yml)
 
 # Update JSON File Workflow
 
