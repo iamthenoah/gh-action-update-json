@@ -47,7 +47,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update Package Json version
-        uses: iamthenoah/update-json-file@v1
+        uses: iamthenoah/gh-action-update-json@v1
         with:
           file: './package.json'
           key: 'version'
