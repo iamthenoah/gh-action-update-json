@@ -34,21 +34,21 @@ jobs:
           author_name: 'Github Workflow'
           author_email: 'no-reply@github-workflow.com'
 
-  test:
-    runs-on: ubuntu-latest
+  # test:
+  #   runs-on: ubuntu-latest
 
-    needs: [build]
+  #   needs: [build]
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
+  #       with:
+  #         token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Update package.json version
-        uses: iamthenoah/update-json-file@master
-        with:
-          key: 'version'
-          value: 1.0.123
-          file: './example/package.json'
-          branch: 'master'
+  #     - name: Update package.json version
+  #       uses: iamthenoah/update-json-file@master
+  #       with:
+  #         key: 'version'
+  #         value: 1.0.123
+  #         file: './example/package.json'
+  #         branch: 'master'
