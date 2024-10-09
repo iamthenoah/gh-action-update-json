@@ -34,10 +34,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.doAction = void 0;
 const core = __importStar(require("@actions/core"));
-const doAction = (text, callback) => __awaiter(void 0, void 0, void 0, function* () {
+const doAction = (text, action) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         core.startGroup(text);
-        yield callback(core);
+        yield action(core);
         core.info('Done.');
         core.endGroup();
     }
