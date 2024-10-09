@@ -1,0 +1,37 @@
+name: Update Json Data
+description: Updates the Json file data.
+
+runs:
+  using: node12
+  main: dist/index.js
+
+branding:
+  icon: arrow-right
+  color: black
+
+inputs: 
+  file:
+    description: Relative path of the json file to update from the root of the repo.
+    required: true
+  key: 
+    description: The key in the json file (my.nested.key).
+    required: true
+  value: 
+    description: The value to use.
+    required: true
+  branch:
+    description: 'Branch to commit the changes to (leave empty for no commit).'
+    required: false
+    default: ''
+  message:
+    description: 'Custom commit message (%f = file, %k = key, %v = value).'
+    required: false
+    default: 'Updated %f with `%k:%v`.'
+  name:
+    description: 'Name showing as the commit sender.'
+    required: false
+    default: Github Workflow
+  email:
+    description: 'Email of the committer.'
+    required: false
+    default: 'noreply@github-workflow.com'
