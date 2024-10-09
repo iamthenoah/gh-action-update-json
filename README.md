@@ -31,7 +31,10 @@ Here’s an example of how to configure the workflow in your GitHub Actions file
 ```yaml
 name: Update package.json version
 
-on: push
+on:
+  push:
+    tags:
+      - 'v*'
 
 jobs:
   update-package-version:
