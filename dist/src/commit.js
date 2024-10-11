@@ -16,14 +16,17 @@ const git = (0, simple_git_1.simpleGit)({ baseDir: process.cwd() });
 const commitChanges = (branch, message, files, credentials) => {
     (0, action_1.doAction)('Commiting files', (core) => __awaiter(void 0, void 0, void 0, function* () {
         core.info('> Setting up git profile...');
-        yield git.addConfig('user.name', credentials.name).addConfig('user.email', credentials.email);
-        yield git.addConfig('author.name', credentials.name).addConfig('author.email', credentials.email);
+        yield git.addConfig('user.name', credentials.name);
+        yield git.addConfig('user.email', credentials.email);
+        yield git.addConfig('author.name', credentials.name);
+        yield git.addConfig('author.email', credentials.email);
         core.info('> Adding files to git...');
         core.startGroup('Files:');
         files.forEach(file => core.info(file));
         core.endGroup();
         core.info(`> Pushing to ${branch ? 'branch ' + branch : 'origin'}...`);
-        yield git.commit(message, files).push('origin', branch);
+        yield git.commit(message, files);
+        yield git.push('origin', branch);
     }));
 };
 exports.commitChanges = commitChanges;
