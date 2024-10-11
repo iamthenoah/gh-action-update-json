@@ -1,21 +1,28 @@
-import * as core from '@actions/core'
+import { getValue, hasValue } from './src/input'
 import { updateJson } from './src/file'
 import { commitChanges } from './src/commit'
 import path from 'path'
 
-const file = core.getInput('file')
-const key = core.getInput('key')
-const value = core.getInput('value')
-const branch = core.getInput('branch')
-const message = core.getInput('message')
-const name = core.getInput('name')
-const email = core.getInput('email')
+const files = getValue('files')
+const key = getValue('key')
+const value = getValue('value')
 
-const data = { file, key, value }
+const main = async () => {
+	for (const file of files) {
+		await updateJson({ file, key, value })
+	}
 
-updateJson(data)
+	if (hasValue('branch')) {
+		const branch = getValue('branch')
+		const message = getValue('message')
+		const name = getValue('name')
+		const email = getValue('email')
 
-if (branch) {
-	const commit = message.replace('%f', path.basename(file)).replace('%k', key).replace('%v', value)
-	commitChanges(branch, commit, [file], { name, email })
+		const names = files.map(f => path.basename(f)).join(', ')
+		const commit = message.replace('%f', names).replace('%k', key).replace('%v', value)
+
+		await commitChanges(branch, commit, files, { name, email })
+	}
 }
+
+main()
