@@ -10,8 +10,8 @@ branding:
   color: black
 
 inputs: 
-  file:
-    description: Relative path of the json file to update from the root of the repo.
+  files:
+    description: Relative path of the json files to update from the root of the repo.
     required: true
   key: 
     description: The key in the json file (my.nested.key).

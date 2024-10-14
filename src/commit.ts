@@ -8,8 +8,8 @@ export type GitCredentials = {
 	email: string
 }
 
-export const commitChanges = (branch: string, message: string, files: string[], credentials: GitCredentials) => {
-	doAction('Commiting files', async core => {
+export const commitChanges = async (branch: string, message: string, files: string[], credentials: GitCredentials) => {
+	await doAction('Commiting files', async core => {
 		core.info('> Setting up git profile...')
 		await git.addConfig('user.name', credentials.name)
 		await git.addConfig('user.email', credentials.email)
@@ -17,11 +17,9 @@ export const commitChanges = (branch: string, message: string, files: string[], 
 		await git.addConfig('author.email', credentials.email)
 
 		core.info('> Adding files to git...')
-		core.startGroup('Files:')
-		files.forEach(file => core.info(file))
-		core.endGroup()
+		files.forEach(file => core.info('- ' + file))
 
-		core.info(`> Pushing to ${branch ? 'branch ' + branch : 'origin'}...`)
+		core.info(`> Pushing to branch '${branch}'...`)
 		await git.commit(message, files)
 		await git.push('origin', branch)
 	})

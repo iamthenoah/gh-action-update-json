@@ -16,7 +16,7 @@ To use this workflow, add it to your GitHub Actions configuration.
 
 | **Input** | **Description**                                                         | **Required** | **Default**                     |
 | --------- | ----------------------------------------------------------------------- | ------------ | ------------------------------- |
-| `file`    | Relative path of the JSON file to update from the root of the repo.     | Yes          | -                               |
+| `files`   | Relative path of the json files to update from the root of the repo.    | Yes          | -                               |
 | `key`     | The key in the JSON file (e.g., `my.nested.key`).                       | Yes          | -                               |
 | `value`   | The value to set for the specified key.                                 | Yes          | -                               |
 | `branch`  | Branch to commit the changes to (leave empty for no commit).            | No           | `''` (no commit)                |
@@ -52,7 +52,8 @@ jobs:
       - name: Update Package Json version
         uses: iamthenoah/gh-action-update-json@v1
         with:
-          file: './package.json'
+          files: |
+            './package.json'
           key: 'version'
           value: ${{ github.ref_name }}
           branch: 'master'
