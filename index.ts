@@ -3,7 +3,7 @@ import { updateJson } from './src/file'
 import { commitChanges } from './src/commit'
 import path from 'path'
 
-const files = getValue('files')
+const files = getValue('files', true)
 const key = getValue('key')
 const value = getValue('value')
 

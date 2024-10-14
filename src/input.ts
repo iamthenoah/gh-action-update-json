@@ -1,5 +1,4 @@
 import * as core from '@actions/core'
-import * as YAML from 'js-yaml'
 
 export type Inputs = {
 	files: string[]
@@ -19,12 +18,6 @@ export const hasValue = <K extends Key>(input: K): boolean => {
 	return core.getInput(input).length != 0
 }
 
-export const getValue = <K extends Key, V = Value<K>>(input: K): V => {
-	const data = core.getInput(input)
-	const yaml = YAML.load(data)
-
-	if (yaml && Array.isArray(yaml) && yaml.every(e => typeof e === 'string')) {
-		return yaml as V
-	}
-	return data as V
+export const getValue = <K extends Key, V = Value<K>>(input: K, collection?: boolean): V => {
+	return (collection ? core.getMultilineInput(input) : core.getInput(input)) as V
 }
