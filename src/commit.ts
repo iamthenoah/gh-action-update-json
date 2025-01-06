@@ -18,11 +18,14 @@ export const commitChanges = (branch: string, message: string, files: string[], 
 
 		core.info('> Adding files to git...')
 		core.startGroup('Files:')
-		for (const file of files) core.info(file)
+
+		for (const file of files) {
+			await git.add(file)
+			core.info(file)
+		}
 		core.endGroup()
 
 		core.info(`> Pushing to ${branch ? 'branch ' + branch : 'origin'}...`)
-		for (const file of files) await git.add(file)
 		await git.commit(message, files)
 		await git.push('origin', branch)
 	})
