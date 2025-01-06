@@ -22,12 +22,12 @@ const commitChanges = (branch, message, files, credentials) => {
         yield git.addConfig('author.email', credentials.email);
         core.info('> Adding files to git...');
         core.startGroup('Files:');
-        for (const file of files)
+        for (const file of files) {
+            yield git.add(file);
             core.info(file);
+        }
         core.endGroup();
         core.info(`> Pushing to ${branch ? 'branch ' + branch : 'origin'}...`);
-        for (const file of files)
-            yield git.add(file);
         yield git.commit(message, files);
         yield git.push('origin', branch);
     }));
