@@ -15,21 +15,22 @@ const simple_git_1 = require("simple-git");
 const git = (0, simple_git_1.simpleGit)({ baseDir: process.cwd() });
 const commitChanges = (branch, message, files, credentials) => {
     (0, action_1.doAction)('Commiting files', (core) => __awaiter(void 0, void 0, void 0, function* () {
-        core.info('> Setting up git profile...');
+        core.info('> Setting up git profile');
         yield git.addConfig('user.name', credentials.name);
         yield git.addConfig('user.email', credentials.email);
-        core.info('> Adding files to git...');
+        yield git.fetch();
+        core.info('> Adding files to git');
         core.startGroup('Files:');
         for (const file of files) {
             yield git.add(file);
             core.info(file);
         }
         core.endGroup();
-        core.info('> Committing changes...');
+        core.info('> Committing changes');
         yield git.commit(message, files);
-        core.info(`> Checking out ${branch} branch...`);
+        core.info(`> Checking out ${branch} branch`);
         yield git.checkout(branch);
-        core.info(`> Pushing to branch ${branch}...`);
+        core.info(`> Pushing to branch ${branch}`);
         yield git.push('origin', branch);
     }));
 };
