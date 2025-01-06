@@ -13,20 +13,22 @@ export const commitChanges = (branch: string, message: string, files: string[], 
 		core.info('> Setting up git profile...')
 		await git.addConfig('user.name', credentials.name)
 		await git.addConfig('user.email', credentials.email)
-		await git.addConfig('author.name', credentials.name)
-		await git.addConfig('author.email', credentials.email)
 
 		core.info('> Adding files to git...')
 		core.startGroup('Files:')
-
 		for (const file of files) {
 			await git.add(file)
 			core.info(file)
 		}
 		core.endGroup()
 
-		core.info(`> Pushing to ${branch ? 'branch ' + branch : 'origin'}...`)
+		core.info('> Committing changes...')
 		await git.commit(message, files)
+
+		core.info(`> Checking out ${branch} branch...`)
+		await git.checkout(branch)
+
+		core.info(`> Pushing to branch ${branch}...`)
 		await git.push('origin', branch)
 	})
 }
