@@ -18,8 +18,6 @@ const commitChanges = (branch, message, files, credentials) => {
         core.info('> Setting up git profile...');
         yield git.addConfig('user.name', credentials.name);
         yield git.addConfig('user.email', credentials.email);
-        yield git.addConfig('author.name', credentials.name);
-        yield git.addConfig('author.email', credentials.email);
         core.info('> Adding files to git...');
         core.startGroup('Files:');
         for (const file of files) {
@@ -27,8 +25,11 @@ const commitChanges = (branch, message, files, credentials) => {
             core.info(file);
         }
         core.endGroup();
-        core.info(`> Pushing to ${branch ? 'branch ' + branch : 'origin'}...`);
+        core.info('> Committing changes...');
         yield git.commit(message, files);
+        core.info(`> Checking out ${branch} branch...`);
+        yield git.checkout(branch);
+        core.info(`> Pushing to branch ${branch}...`);
         yield git.push('origin', branch);
     }));
 };
