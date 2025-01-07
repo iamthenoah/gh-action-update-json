@@ -11,23 +11,20 @@ export type GitCredentials = {
 export const commitChanges = (branch: string, message: string, files: string[], credentials: GitCredentials) => {
 	doAction('Commiting files', async core => {
 		core.info('> Setting up git profile')
-		await git.addConfig('user.name', credentials.name)
-		await git.addConfig('user.email', credentials.email)
-		await git.fetch()
+		await git.addConfig('user.name', credentials.name).addConfig('user.email', credentials.email)
+
+		core.info(`> Checking out ${branch} branch`)
+		await git.fetch().checkout(branch)
 
 		core.info('> Adding files to git')
 		core.startGroup('Files:')
 		for (const file of files) {
-			await git.add(file)
 			core.info(file)
 		}
 		core.endGroup()
 
 		core.info('> Committing changes')
-		await git.commit(message, files)
-
-		core.info(`> Checking out ${branch} branch`)
-		await git.checkout(branch)
+		await git.add(files).commit(message, files)
 
 		core.info(`> Pushing to branch ${branch}`)
 		await git.push('origin', branch, { '--set-upstream': null })
