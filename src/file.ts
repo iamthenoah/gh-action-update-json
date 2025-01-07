@@ -13,7 +13,7 @@ export type JsonData = {
 
 export const updateJson = ({ file, key, value }: JsonData) => {
 	doAction('Updating JSON file', async core => {
-		core.info(`> Updating ${file}...`)
+		core.info(`> Updating ${file} with '${key}=${value}'`)
 		const data = await readJson(file, 'utf8')
 		const json = JSON.parse(data)
 		const keys = key.split('.')
