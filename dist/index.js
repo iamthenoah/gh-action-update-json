@@ -166,7 +166,7 @@ const commitChanges = (branch, message, files, credentials) => {
         core.info(`> Checking out ${branch} branch`);
         yield git.checkout(branch);
         core.info(`> Pushing to branch ${branch}`);
-        yield git.push('origin', branch, ['--force']);
+        yield git.push('origin', branch, { '--set-upstream': null });
     }));
 };
 exports.commitChanges = commitChanges;
