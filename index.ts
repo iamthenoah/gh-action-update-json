@@ -11,9 +11,7 @@ const message = core.getInput('message')
 const name = core.getInput('name')
 const email = core.getInput('email')
 
-const data = { file, key, value }
-
-updateJson(data)
+updateJson({ file, key, value })
 
 if (branch) {
 	const commit = message.replace('%f', path.basename(file)).replace('%k', key).replace('%v', value)

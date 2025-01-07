@@ -1,21 +1,26 @@
 {
-	"name": "gh-action-update-json",
-	"description": "Workflow to update the package.json file of a NodeJS project.",
-	"version": "1.0.0",
-	"author": "Noah",
-	"license": "MIT",
-	"keywords": [],
-	"main": "dist/index.js",
-	"scripts": {
-		"build": "tsc && ncc build dist/index.js -o dist"
-	},
-	"dependencies": {
-		"@actions/core": "^1.11.1",
-		"simple-git": "^3.27.0"
-	},
-	"devDependencies": {
-		"@types/node": "^22.7.5",
-		"@vercel/ncc": "^0.38.2",
-		"typescript": "^5.6.2"
-	}
+  "name": "gh-action-update-json",
+  "description": "GitHub Action for updating key-value pairs in JSON files and committing changes to your repository.",
+  "version": "v2",
+  "author": "Noah",
+  "license": "MIT",
+  "keywords": [
+    "workflow",
+    "json",
+    "automation",
+    "cicd"
+  ],
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc && ncc build dist/index.js -o dist"
+  },
+  "dependencies": {
+    "@actions/core": "^1.11.1",
+    "simple-git": "^3.27.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.5",
+    "@vercel/ncc": "^0.38.2",
+    "typescript": "^5.6.2"
+  }
 }
