@@ -1,4 +1,5 @@
 [![deploy](https://github.com/iamthenoah/update-json-file/actions/workflows/build.yml/badge.svg)](https://github.com/iamthenoah/update-json-file/actions/workflows/build.yml)
+[![publish](https://github.com/iamthenoah/gh-action-update-json/actions/workflows/publish.yml/badge.svg)](https://github.com/iamthenoah/gh-action-update-json/actions/workflows/publish.yml)
 
 # Update JSON File Workflow
 
