@@ -1,7 +1,7 @@
 {
   "name": "gh-action-update-json",
   "description": "GitHub Action for updating key-value pairs in JSON files and committing changes to your repository.",
-  "version": "v2",
+  "version": "v3",
   "author": "Noah",
   "license": "MIT",
   "keywords": [
