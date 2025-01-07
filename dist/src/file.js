@@ -20,7 +20,7 @@ const readJson = (0, util_1.promisify)(fs_1.default.readFile);
 const writeJson = (0, util_1.promisify)(fs_1.default.writeFile);
 const updateJson = ({ file, key, value }) => {
     (0, action_1.doAction)('Updating JSON file', (core) => __awaiter(void 0, void 0, void 0, function* () {
-        core.info(`> Updating ${file} with '${key}=${value}'`);
+        core.info(`> Updating ${file} with '${key}':'${value}'`);
         const data = yield readJson(file, 'utf8');
         const json = JSON.parse(data);
         const keys = key.split('.');
