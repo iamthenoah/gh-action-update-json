@@ -30,6 +30,6 @@ export const commitChanges = (branch: string, message: string, files: string[], 
 		await git.checkout(branch)
 
 		core.info(`> Pushing to branch ${branch}`)
-		await git.push('origin', branch)
+		await git.push('origin', branch).catch(console.error)
 	})
 }
