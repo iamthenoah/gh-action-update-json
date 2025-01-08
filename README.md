@@ -53,12 +53,32 @@ jobs:
       - name: Update Package Json version
         uses: iamthenoah/gh-action-update-json@v1
         with:
+          # The 'file' input specifies the relative path of the JSON file to update from the root.
+          # Default: None, Required: true
           file: './package.json'
+
+          # The 'key' input is the key in the JSON file to update (e.g., 'my.nested.key').
+          # Default: None, Required: true
           key: 'version'
+
+          # The 'value' input specifies the value to set for the key.
+          # Default: None, Required: true
           value: ${{ github.ref_name }}
+
+          # The 'branch' input specifies the branch to commit changes to.
+          # Default: '', Required: false
           branch: 'master'
+
+          # The 'message' input is the custom commit message format.
+          # Default: 'Updated %f with `%k:%v`.', Required: false
           message: 'Updated %f version to `%v`'
+
+          # The 'name' input specifies the name shown as the commit sender.
+          # Default: 'Github Workflow', Required: false
           name: 'My Workflow'
+
+          # The 'email' input sets the email of the committer.
+          # Default: 'noreply@github-workflow.com', Required: false
           email: 'workflow@example.com'
 ```
 
