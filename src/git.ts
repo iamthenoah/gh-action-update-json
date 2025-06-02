@@ -1,15 +1,15 @@
 import { doAction } from './action'
 import { simpleGit } from 'simple-git'
 
-const git = simpleGit({ baseDir: process.cwd() })
+export const git = simpleGit({ baseDir: process.cwd() })
 
 export type GitCredentials = {
 	name: string
 	email: string
 }
 
-export const commitChanges = (branch: string, message: string, files: string[], credentials: GitCredentials) => {
-	doAction('Commiting files', async core => {
+export const commit = async (branch: string, message: string, files: string[], credentials: GitCredentials) => {
+	await doAction('Commiting files', async core => {
 		core.info('> Setting up git profile')
 		await git.addConfig('user.name', credentials.name).addConfig('user.email', credentials.email)
 
