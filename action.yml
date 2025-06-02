@@ -19,19 +19,22 @@ inputs:
   value: 
     description: The value to use.
     required: true
-  branch:
-    description: 'Branch to commit the changes to (leave empty for no commit).'
+  commit: 
+    description: Whether to commit the changes.
     required: false
-    default: ''
+    default: 'true'
+  branch:
+    description: Branch to commit the changes to.
+    required: false
   message:
-    description: 'Custom commit message (%f = file, %k = key, %v = value).'
+    description: Custom commit message (%f = file, %k = key, %v = value).
     required: false
     default: 'Updated %f with `%k:%v`.'
   name:
-    description: 'Name showing as the commit sender.'
+    description: Name showing as the commit sender.
     required: false
     default: Github Workflow
   email:
-    description: 'Email of the committer.'
+    description: Email of the committer.
     required: false
     default: 'noreply@github-workflow.com'

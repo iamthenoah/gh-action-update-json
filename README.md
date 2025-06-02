@@ -1,5 +1,4 @@
-[![deploy](https://github.com/iamthenoah/update-json-file/actions/workflows/build.yml/badge.svg)](https://github.com/iamthenoah/update-json-file/actions/workflows/build.yml)
-[![publish](https://github.com/iamthenoah/gh-action-update-json/actions/workflows/publish.yml/badge.svg)](https://github.com/iamthenoah/gh-action-update-json/actions/workflows/publish.yml)
+[![deploy](https://github.com/iamthenoah/update-json-file/actions/workflows/build.yml/badge.svg)](https://github.com/iamthenoah/update-json-file/actions/workflows/build.yml) [![publish](https://github.com/iamthenoah/gh-action-update-json/actions/workflows/publish.yml/badge.svg)](https://github.com/iamthenoah/gh-action-update-json/actions/workflows/publish.yml)
 
 # Update JSON File Workflow
 
@@ -15,15 +14,16 @@ To use this workflow, add it to your GitHub Actions configuration.
 
 ### Inputs
 
-| **Input** | **Description**                                                         | **Required** | **Default**                     |
-| --------- | ----------------------------------------------------------------------- | ------------ | ------------------------------- |
-| `file`    | Relative path of the JSON file to update from the root of the repo.     | Yes          | -                               |
-| `key`     | The key in the JSON file (e.g., `my.nested.key`).                       | Yes          | -                               |
-| `value`   | The value to set for the specified key.                                 | Yes          | -                               |
-| `branch`  | Branch to commit the changes to (leave empty for no commit).            | No           | `''` (no commit)                |
-| `message` | Custom commit message, where `%f` = file, `%k` = key, and `%v` = value. | No           | `'Updated %f with \`%k:%v\`.'`  |
-| `name`    | Name that will appear as the committer for the commit.                  | No           | `'Github Workflow'`             |
-| `email`   | Email that will appear in the commit as the committer's email.          | No           | `'noreply@github-workflow.com'` |
+| **Input** | **Description** | **Required** | **Default** |
+| --- | --- | --- | --- |
+| `file` | Relative path of the JSON file to update from the root of the repo. | Yes | — |
+| `key` | The key in the JSON file to update (e.g. `my.nested.key`). | Yes | — |
+| `value` | The new value to assign to the specified key. | Yes | — |
+| `commit` | Whether to commit the changes. | No | `'true'` |
+| `branch` | Branch to commit the changes to. Defaults to the current branch if unspecified. | No | _current branch_ |
+| `message` | Commit message. Supports placeholders: `%f` = file, `%k` = key, `%v` = value. | No | `'Updated %f with \`%k:%v\`.'` |
+| `name` | Commit author name. | No | `'Github Workflow'` |
+| `email` | Commit author email. | No | `'noreply@github-workflow.com'` |
 
 ### Example
 
@@ -51,7 +51,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update Package Json version
-        uses: iamthenoah/gh-action-update-json@v1
+        uses: iamthenoah/gh-action-update-json@v4
         with:
           # The 'file' input specifies the relative path of the JSON file to update from the root.
           # Default: None, Required: true
