@@ -9,6 +9,7 @@ const main = async () => {
 	const value = core.getInput('value', { required: true })
 	const commit = core.getInput('commit')
 
+	core.info('testing')
 	await updateJson({ file, key, value })
 
 	// if (commit === '' || commit.toLowerCase() === 'true') {
