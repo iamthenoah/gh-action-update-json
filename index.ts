@@ -11,15 +11,15 @@ const main = async () => {
 
 	await updateJson({ file, key, value })
 
-	if (commit === '' || commit.toLowerCase() === 'true') {
-		const branch = core.getInput('branch') || (await git.branch()).current
-		const message = core.getInput('message')
-		const name = core.getInput('name')
-		const email = core.getInput('email')
+	// if (commit === '' || commit.toLowerCase() === 'true') {
+	const branch = core.getInput('branch') || (await git.branch()).current
+	const message = core.getInput('message')
+	const name = core.getInput('name')
+	const email = core.getInput('email')
 
-		const msg = message.replace('%f', path.basename(file)).replace('%k', key).replace('%v', value)
-		await updateBranch(branch, msg, [file], { name, email })
-	}
+	const msg = message.replace('%f', path.basename(file)).replace('%k', key).replace('%v', value)
+	await updateBranch(branch, msg, [file], { name, email })
+	// }
 }
 
 main()
