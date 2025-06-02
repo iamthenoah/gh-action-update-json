@@ -24,7 +24,6 @@ jobs:
       - name: Package Version Change
         uses: iamthenoah/gh-action-update-json@master
         with:
-          branch: master
           file: package.json
           key: version
           value: ${{ github.ref_name }}

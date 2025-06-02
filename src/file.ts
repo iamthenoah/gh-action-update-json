@@ -11,8 +11,8 @@ export type JsonData = {
 	value: string
 }
 
-export const updateJson = ({ file, key, value }: JsonData) => {
-	doAction('Updating JSON file', async core => {
+export const updateJson = async ({ file, key, value }: JsonData) => {
+	await doAction('Updating JSON file', async core => {
 		core.info(`> Updating ${file} with '${key}':'${value}'`)
 		const data = await readJson(file, 'utf8')
 		const json = JSON.parse(data)
