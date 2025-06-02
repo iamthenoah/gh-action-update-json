@@ -39,26 +39,39 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(7484));
 const file_1 = __nccwpck_require__(6072);
-const commit_1 = __nccwpck_require__(3051);
+const git_1 = __nccwpck_require__(48);
 const path_1 = __importDefault(__nccwpck_require__(6928));
-const file = core.getInput('file');
-const key = core.getInput('key');
-const value = core.getInput('value');
-const branch = core.getInput('branch');
-const message = core.getInput('message');
-const name = core.getInput('name');
-const email = core.getInput('email');
-(0, file_1.updateJson)({ file, key, value });
-if (branch) {
-    const commit = message.replace('%f', path_1.default.basename(file)).replace('%k', key).replace('%v', value);
-    (0, commit_1.commitChanges)(branch, commit, [file], { name, email });
-}
+const main = () => __awaiter(void 0, void 0, void 0, function* () {
+    const file = core.getInput('file', { required: true });
+    const key = core.getInput('key', { required: true });
+    const value = core.getInput('value', { required: true });
+    const commit = core.getInput('commit');
+    yield (0, file_1.updateJson)({ file, key, value });
+    if (commit === '' || commit.toLowerCase() === 'true') {
+        const branch = core.getInput('branch') || (yield git_1.git.branch()).current;
+        const message = core.getInput('message');
+        const name = core.getInput('name');
+        const email = core.getInput('email');
+        const msg = message.replace('%f', path_1.default.basename(file)).replace('%k', key).replace('%v', value);
+        yield (0, git_1.updateBranch)(branch, msg, [file], { name, email });
+    }
+});
+main();
 
 
 /***/ }),
@@ -129,48 +142,6 @@ exports.doAction = doAction;
 
 /***/ }),
 
-/***/ 3051:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.commitChanges = void 0;
-const action_1 = __nccwpck_require__(4716);
-const simple_git_1 = __nccwpck_require__(9065);
-const git = (0, simple_git_1.simpleGit)({ baseDir: process.cwd() });
-const commitChanges = (branch, message, files, credentials) => {
-    (0, action_1.doAction)('Commiting files', (core) => __awaiter(void 0, void 0, void 0, function* () {
-        core.info('> Setting up git profile');
-        yield git.addConfig('user.name', credentials.name).addConfig('user.email', credentials.email);
-        core.info(`> Checking out ${branch} branch`);
-        yield git.fetch().checkout(branch);
-        core.info('> Adding files to git');
-        core.startGroup('Files:');
-        for (const file of files) {
-            core.info(file);
-        }
-        core.endGroup();
-        core.info('> Committing changes');
-        yield git.add(files).commit(message, files);
-        core.info(`> Pushing to branch ${branch}`);
-        yield git.push('origin', branch, { '--set-upstream': null });
-    }));
-};
-exports.commitChanges = commitChanges;
-
-
-/***/ }),
-
 /***/ 6072:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -195,8 +166,8 @@ const util_1 = __nccwpck_require__(9023);
 const fs_1 = __importDefault(__nccwpck_require__(9896));
 const readJson = (0, util_1.promisify)(fs_1.default.readFile);
 const writeJson = (0, util_1.promisify)(fs_1.default.writeFile);
-const updateJson = ({ file, key, value }) => {
-    (0, action_1.doAction)('Updating JSON file', (core) => __awaiter(void 0, void 0, void 0, function* () {
+const updateJson = (_a) => __awaiter(void 0, [_a], void 0, function* ({ file, key, value }) {
+    yield (0, action_1.doAction)('Updating JSON file', (core) => __awaiter(void 0, void 0, void 0, function* () {
         core.info(`> Updating ${file} with '${key}':'${value}'`);
         const data = yield readJson(file, 'utf8');
         const json = JSON.parse(data);
@@ -212,8 +183,50 @@ const updateJson = ({ file, key, value }) => {
         current[keys[keys.length - 1]] = value;
         yield writeJson(file, JSON.stringify(json, null, 2));
     }));
-};
+});
 exports.updateJson = updateJson;
+
+
+/***/ }),
+
+/***/ 48:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.updateBranch = exports.git = void 0;
+const action_1 = __nccwpck_require__(4716);
+const simple_git_1 = __nccwpck_require__(9065);
+exports.git = (0, simple_git_1.simpleGit)({ baseDir: process.cwd() });
+const updateBranch = (branch, message, files, credentials) => __awaiter(void 0, void 0, void 0, function* () {
+    yield (0, action_1.doAction)('Commiting files', (core) => __awaiter(void 0, void 0, void 0, function* () {
+        core.info('> Setting up git profile');
+        yield exports.git.addConfig('user.name', credentials.name).addConfig('user.email', credentials.email);
+        core.info(`> Checking out ${branch} branch`);
+        yield exports.git.fetch().checkout(branch);
+        core.info('> Adding files to git');
+        core.startGroup('Files:');
+        for (const file of files) {
+            core.info(file);
+        }
+        core.endGroup();
+        core.info('> Committing changes');
+        yield exports.git.add(files).commit(message, files);
+        core.info(`> Pushing to branch ${branch}`);
+        yield exports.git.push('origin', branch, { '--set-upstream': null });
+    }));
+});
+exports.updateBranch = updateBranch;
 
 
 /***/ }),
@@ -3778,7 +3791,7 @@ function save(namespaces) {
 function load() {
 	let r;
 	try {
-		r = exports.storage.getItem('debug');
+		r = exports.storage.getItem('debug') || exports.storage.getItem('DEBUG') ;
 	} catch (error) {
 		// Swallow
 		// XXX (@Qix-) should we be logging these?
@@ -4006,7 +4019,7 @@ function setup(env) {
 
 		const split = (typeof namespaces === 'string' ? namespaces : '')
 			.trim()
-			.replace(' ', ',')
+			.replace(/\s+/g, ',')
 			.split(',')
 			.filter(Boolean);
 
@@ -15161,7 +15174,7 @@ module.exports = {
 
 
 const { parseSetCookie } = __nccwpck_require__(8915)
-const { stringify, getHeadersList } = __nccwpck_require__(3834)
+const { stringify } = __nccwpck_require__(3834)
 const { webidl } = __nccwpck_require__(4222)
 const { Headers } = __nccwpck_require__(6349)
 
@@ -15237,14 +15250,13 @@ function getSetCookies (headers) {
 
   webidl.brandCheck(headers, Headers, { strict: false })
 
-  const cookies = getHeadersList(headers).cookies
+  const cookies = headers.getSetCookie()
 
   if (!cookies) {
     return []
   }
 
-  // In older versions of undici, cookies is a list of name:value.
-  return cookies.map((pair) => parseSetCookie(Array.isArray(pair) ? pair[1] : pair))
+  return cookies.map((pair) => parseSetCookie(pair))
 }
 
 /**
@@ -15672,14 +15684,15 @@ module.exports = {
 /***/ }),
 
 /***/ 3834:
-/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+/***/ ((module) => {
 
 "use strict";
 
 
-const assert = __nccwpck_require__(2613)
-const { kHeadersList } = __nccwpck_require__(6443)
-
+/**
+ * @param {string} value
+ * @returns {boolean}
+ */
 function isCTLExcludingHtab (value) {
   if (value.length === 0) {
     return false
@@ -15940,31 +15953,13 @@ function stringify (cookie) {
   return out.join('; ')
 }
 
-let kHeadersListNode
-
-function getHeadersList (headers) {
-  if (headers[kHeadersList]) {
-    return headers[kHeadersList]
-  }
-
-  if (!kHeadersListNode) {
-    kHeadersListNode = Object.getOwnPropertySymbols(headers).find(
-      (symbol) => symbol.description === 'headers list'
-    )
-
-    assert(kHeadersListNode, 'Headers cannot be parsed')
-  }
-
-  const headersList = headers[kHeadersListNode]
-  assert(headersList)
-
-  return headersList
-}
-
 module.exports = {
   isCTLExcludingHtab,
-  stringify,
-  getHeadersList
+  validateCookieName,
+  validateCookiePath,
+  validateCookieValue,
+  toIMFDate,
+  stringify
 }
 
 
@@ -19968,6 +19963,7 @@ const {
   isValidHeaderName,
   isValidHeaderValue
 } = __nccwpck_require__(5523)
+const util = __nccwpck_require__(9023)
 const { webidl } = __nccwpck_require__(4222)
 const assert = __nccwpck_require__(2613)
 
@@ -20521,6 +20517,9 @@ Object.defineProperties(Headers.prototype, {
   [Symbol.toStringTag]: {
     value: 'Headers',
     configurable: true
+  },
+  [util.inspect.custom]: {
+    enumerable: false
   }
 })
 
@@ -29697,6 +29696,20 @@ class Pool extends PoolBase {
       ? { ...options.interceptors }
       : undefined
     this[kFactory] = factory
+
+    this.on('connectionError', (origin, targets, error) => {
+      // If a connection error occurs, we remove the client from the pool,
+      // and emit a connectionError event. They will not be re-used.
+      // Fixes https://github.com/nodejs/undici/issues/3895
+      for (const target of targets) {
+        // Do not use kRemoveClient here, as it will close the client,
+        // but the client cannot be closed in this state.
+        const idx = this[kClients].indexOf(target)
+        if (idx !== -1) {
+          this[kClients].splice(idx, 1)
+        }
+      }
+    })
   }
 
   [kGetDispatcher] () {
