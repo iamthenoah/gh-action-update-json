@@ -81,23 +81,17 @@ jobs:
           # The 'email' input sets the email of the committer.
           # Default: 'noreply@github-workflow.com', Required: false
           email: 'workflow@example.com'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # required
 ```
 
 ## Permissions
 
-This workflow requires elevated permissions in order to commit changes to a repositry. To fix this, add the following in the root of the workflow or job:
+This workflow requires elevated permissions in order to commit changes to a repositry. To account for this, add the following in the root of the workflow or job:
 
 ```yaml
 permissions:
   contents: write
-```
-
-In addition, perform a checkout by passing the github context token:
-
-```yaml
-uses: actions/checkout@v4
-with:
-  token: ${{ secrets.GITHUB_TOKEN }}
 ```
 
 ## License
