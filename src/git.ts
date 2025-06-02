@@ -8,7 +8,7 @@ export type GitCredentials = {
 	email: string
 }
 
-export const commit = async (branch: string, message: string, files: string[], credentials: GitCredentials) => {
+export const updateBranch = async (branch: string, message: string, files: string[], credentials: GitCredentials) => {
 	await doAction('Commiting files', async core => {
 		core.info('> Setting up git profile')
 		await git.addConfig('user.name', credentials.name).addConfig('user.email', credentials.email)
