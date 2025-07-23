@@ -16,10 +16,10 @@
   },
   "dependencies": {
     "@actions/core": "^1.11.1",
-    "simple-git": "^3.27.0"
+    "simple-git": "^3.28.0"
   },
   "devDependencies": {
-    "@types/node": "^22.15.29",
+    "@types/node": "^24.1.0",
     "@vercel/ncc": "^0.38.3",
     "typescript": "^5.8.3"
   }
