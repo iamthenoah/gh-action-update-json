@@ -22,7 +22,7 @@ To use this workflow, add it to your GitHub Actions configuration.
 | `value`   | The new value to assign to the specified key.                                   | Yes          | —                               |
 | `commit`  | Whether to commit the changes.                                                  | No           | `'true'`                        |
 | `branch`  | Branch to commit the changes to. Defaults to the current branch if unspecified. | No           | _current branch_                |
-| `message` | Commit message. Supports placeholders: `%f` = file, `%k` = key, `%v` = value.   | No           | `'Updated %f with \`%k:%v\`.'`  |
+| `message` | Commit message. Supports placeholders: `%f` = file, `%k` = key, `%v` = value.   | No           | `'Updated %f with %k:%v.'`      |
 | `name`    | Commit author name.                                                             | No           | `'Github Workflow'`             |
 | `email`   | Commit author email.                                                            | No           | `'noreply@github-workflow.com'` |
 
